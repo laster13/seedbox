@@ -1,0 +1,248 @@
+### Script de @Barberousse de Mondedie
+#!/bin/bash
+IEXT=$(route | grep '^default' | grep -o '[^ ]*$')
+RESEAU_LOCAL="127.0.0.0/24"
+IPT=/sbin/iptables
+IPT6=/sbin/ip6tables
+
+### FONCTIONS
+
+# Definir les règles dans cette fonction
+fw_start() {
+# Default policy
+i -P INPUT DROP
+i -P FORWARD ACCEPT
+i -P OUTPUT ACCEPT
+i6 -P INPUT DROP
+i6 -P FORWARD ACCEPT
+i6 -P OUTPUT ACCEPT
+
+#autoriser loopback
+i -t filter -A USER-INPUT -i lo -j ACCEPT
+i -t filter -A USER-OUTPUT -o lo -j ACCEPT
+
+#Ne pas casser les connexions etablies
+i -A USER-INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+#allow ping
+i -t filter -A USER-INPUT -p icmp  -m limit --limit 12/s --limit-burst 3 -j ACCEPT
+i -t filter -A USER-INPUT -p igmp -s $RESEAU_LOCAL -j ACCEPT
+i -t filter -A USER-INPUT -s $RESEAU_LOCAL -m pkttype --pkt-type multicast -j ACCEPT
+i -t filter -A USER-INPUT -m pkttype --pkt-type broadcast -j ACCEPT
+
+#SSH
+i -t filter -A USER-INPUT -p tcp --dport 22 -j ACCEPT -m comment --comment "SSH"
+i6 -t filter -A USER-INPUT -p tcp --dport 22 -j ACCEPT -m comment --comment "SSH"
+
+#log les paquets non acceptés et les rejette proprement
+i -t filter -A USER-INPUT -j LOG -m limit --limit 12/min --limit-burst 12 --log-prefix "DEFAULT_DROP_INPUT: " -m comment --comment "Log default reject"
+i -t filter -A USER-INPUT -p tcp -j REJECT --reject-with tcp-reset -m comment --comment "reject default tcp"
+i -t filter -A USER-INPUT -j REJECT -m comment --comment "reject default"
+i6 -t filter -A USER-INPUT -j LOG -m limit --limit 12/min --limit-burst 12 --log-prefix "DEFAULT_DROP_INPUT: " -m comment --comment "Log default reject"
+i6 -t filter -A USER-INPUT -p tcp -j REJECT --reject-with tcp-reset -m comment --comment "reject default tcp"
+i6 -t filter -A USER-INPUT -j REJECT -m comment --comment "reject default"
+}
+
+#efface toutes les règles iptables
+fw_stop() {
+i -t filter -F
+i -t filter -X
+i -t nat -F
+i -t nat -X
+i -t mangle -F
+i -t mangle -X
+i -P INPUT ACCEPT
+i -P FORWARD ACCEPT
+i -P OUTPUT ACCEPT
+
+i6 -t filter -F
+i6 -t nat -F
+i6 -t mangle -F
+i6 -t filter -X
+i6 -t nat -X
+i6 -t mangle -X
+i6 -P INPUT ACCEPT
+i6 -P FORWARD ACCEPT
+i6 -P OUTPUT ACCEPT
+}
+# log to logger :
+readonly SCRIPT_NAME="$(basename -- $0)"
+log() {
+echo -en "\033[1m"
+if [[ -t 0 ]]; then
+        logger -s -p user.notice -t "$SCRIPT_NAME" -- "$@"
+else
+        cat | logger -s -p user.notice -t "$SCRIPT_NAME" -- "$@"
+fi
+echo -en "\033[0m"
+}
+err() {
+echo -en "\033[31;1m"
+if [[ -t 0 ]]; then
+        logger -s -p user.error -t "$SCRIPT_NAME" -- "$@" >&2
+else
+        cat | logger -s -p user.error -t "$SCRIPT_NAME" -- "$@" >&2
+fi
+echo -en "\033[0m"
+}
+
+i() {
+[[ $1 == 'NOOUT' ]] && local NOOUT=true && shift
+
+msg=$($IPT "$@" 2>&1)
+if [[ $? -eq 0 ]];then
+        log "[OK] iptables $@"
+else
+        if [[ $NOOUT != 'true' ]]; then
+          err "[err] iptables $@"
+          err "[err] $msg"
+          n=$(( $n + 1 ))
+        fi
+fi
+}
+
+i6() {
+[[ $1 == 'NOOUT' ]] && local NOOUT=true && shift
+
+msg=$($IPT6 "$@" 2>&1)
+if [[ $? -eq 0 ]];then
+        log "[OK] ip6tables $@"
+else
+        if [[ $NOOUT != 'true' ]]; then
+          err "[err] ip6tables $@"
+          err "[err] $msg"
+          n=$(( $n + 1 ))
+        fi
+fi
+}
+
+#prepare les chaines utilisateurs vides
+fw_clear() {
+#ipv4
+i -P INPUT ACCEPT
+i -P FORWARD ACCEPT
+i -P OUTPUT ACCEPT
+
+i NOOUT -t filter -N USER-INPUT
+i NOOUT -t filter -N USER-OUTPUT
+i NOOUT -t filter -N USER-FORWARD
+
+#eviter doublon
+i NOOUT -t filter -D INPUT -j USER-INPUT
+i NOOUT -t filter -D FORWARD -j USER-FORWARD
+i NOOUT -t filter -D OUTPUT -j USER-OUTPUT
+
+i -t filter -F USER-INPUT
+i -t filter -F USER-OUTPUT
+i -t filter -F USER-FORWARD
+
+i -t filter -I INPUT -j USER-INPUT
+i -t filter -I FORWARD -j USER-FORWARD
+i -t filter -I OUTPUT -j USER-OUTPUT
+
+i NOOUT -t nat -N USER-PREROUTING
+i NOOUT -t nat -N USER-POSTROUTING
+i -t nat -D PREROUTING -j USER-PREROUTING
+i -t nat -D POSTROUTING -j USER-POSTROUTING
+i -t nat -I PREROUTING -j USER-PREROUTING
+i -t nat -I POSTROUTING -j USER-POSTROUTING
+i -t nat -F USER-PREROUTING
+i -t nat -F USER-POSTROUTING
+
+
+#ipv6
+i6 -P INPUT ACCEPT
+i6 -P FORWARD ACCEPT
+i6 -P OUTPUT ACCEPT
+
+i6 NOOUT -t filter -N USER-INPUT
+i6 NOOUT -t filter -N USER-OUTPUT
+i6 NOOUT -t filter -N USER-FORWARD
+
+#eviter doublon
+i6 NOOUT -t filter -D INPUT -j USER-INPUT
+i6 NOOUT -t filter -D FORWARD -j USER-FORWARD
+i6 NOOUT -t filter -D OUTPUT -j USER-OUTPUT
+
+i6 -t filter -F USER-INPUT
+i6 -t filter -F USER-OUTPUT
+i6 -t filter -F USER-FORWARD
+
+i6 -t filter -I INPUT -j USER-INPUT
+i6 -t filter -I FORWARD -j USER-FORWARD
+i6 -t filter -I OUTPUT -j USER-OUTPUT
+
+i6 NOOUT -t nat -N USER-PREROUTING
+i6 NOOUT -t nat -N USER-POSTROUTING
+
+i6 -t nat -D PREROUTING -j USER-PREROUTING
+i6 -t nat -D POSTROUTING -j USER-POSTROUTING
+i6 -t nat -I PREROUTING -j USER-PREROUTING
+i6 -t nat -I POSTROUTING -j USER-POSTROUTING
+
+i6 -t nat -F USER-PREROUTING
+i6 -t nat -F USER-POSTROUTING
+}
+
+fw_save() {
+/sbin/iptables-save > /etc/iptables.backup
+}
+
+fw_restore() {
+if [ -e /etc/iptables.backup ]; then
+ /sbin/iptables-restore < /etc/iptables.backup
+fi
+
+if [ -e /etc/ip6tables.backup ]; then
+ /sbin/ip6tables-restore < /etc/ip6tables.backup
+fi
+}
+#test après 30 secondes restore la version précédente.
+fw_test() {
+fw_save
+sleep 30 && log "restauration des règles précédentes" && fw_restore &
+fw_start
+}
+
+n=0
+#demerrage script si pas abscence d'argument, permet lancement automatique au demarrage
+if [[ $# -eq 0 ]]; then
+ log "demarrage firewall"
+ fw_clear
+ fw_start
+ log "fini avec $n erreurs"
+ exit 0
+fi
+
+case "$1" in
+start|restart)
+ log -n "Starting firewall.."
+ fw_clear
+ fw_start
+ log "fini avec $n erreurs"
+ ;;
+stop)
+ log -n "etes-vous sur ? vous effacer toutes les regèles et ouvrez tous les ports? y pour oui"
+ read yesno
+        if [[ $y == "y" ]]; then
+                fw_stop
+        fi
+ log "fini avec $n erreurs"
+ ;;
+clear)
+ log -n "Clearing firewall rules.."
+ fw_clear
+ log "done."
+ ;;
+test)
+ log -n "Test Firewall rules..."
+ fw_test
+ log -n "Previous configuration will be restore in 30 seconds"
+ ;;
+*)
+ log "Usage: $0 {start|stop|restart|clear|test}"
+ exit 1
+ ;;
+esac
+
+exit 0
