@@ -41,8 +41,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 	echo -e "${CGREEN}   5) Sauvegarde && Restauration${CEND}"
 	echo -e "${CGREEN}   6) Quitter ${CEND}"
 	echo -e ""
-	until [[ "$PORT_CHOICE" =~ ^[1-5]$ ]]; do
-		read -p "Votre choix [1-5]: " -e -i 1 PORT_CHOICE
+	until [[ "$PORT_CHOICE" =~ ^[1-6]$ ]]; do
+		read -p "Votre choix [1-6]: " -e -i 1 PORT_CHOICE
 	done
 
 	case $PORT_CHOICE in
