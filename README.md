@@ -9,3 +9,5 @@ cd /usr/local/bin
 chmod +x iptables seedbox.sh logo.sh
 seedbox.sh
 ```
+
+Voili voilou chris, amuses toi bien :)
