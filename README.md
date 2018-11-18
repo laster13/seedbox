@@ -7,4 +7,5 @@ cd seedbox
 mv iptables seedbox.sh logo.sh /usr/local/bin
 cd /usr/local/bin
 chmod +x iptables seedbox.sh logo.sh
+seedbox.sh
 ```
