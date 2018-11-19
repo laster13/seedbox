@@ -443,6 +443,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 
 			## création d'une authentification pour rtorrent
 			echo -e "${CCYAN}Définir un utilisateur Pour l'authentification web${CEND}"
+			mkdir -p /etc/apache2
 			VAR=$(htpasswd -c /etc/apache2/.htpasswd $USERNAME 2>/dev/null)
 			VAR=$(sed -e 's/\$/\$$/g' /etc/apache2/.htpasswd 2>/dev/null)
 			export VAR
