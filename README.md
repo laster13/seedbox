@@ -1,6 +1,7 @@
 # seedbox
 ```
 ## installation
+apt install git
 cd /tmp
 git clone https://github.com/laster13/seedbox.git
 cd seedbox
