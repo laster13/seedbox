@@ -1522,7 +1522,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo ""
 
 				# Mise en place iptables
-				cp /usr/local/bin/iptables /etc/network/if-pre-up.d/iptables
 				sed -i -e 's/22/'$PORT'/g' /etc/network/if-pre-up.d/iptables
 				read -p "Appuyer sur la touche Entrer pour continuer"
 				chmod +x /etc/network/if-pre-up.d/iptables
