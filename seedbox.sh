@@ -878,7 +878,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			nano /mnt/docker-compose.yml
 			progress-bar 20
 			cd /mnt
-			docker network create traefik_proxy
 			docker-compose up -d traefik 2>/dev/null
 			echo ""
 			echo -e "${CCYAN}La configuration des variables s'est parfaitement déroulée ${CEND}"
