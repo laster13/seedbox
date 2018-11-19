@@ -5,9 +5,10 @@ apt install git
 cd /tmp
 git clone https://github.com/laster13/seedbox.git
 cd seedbox
-mv iptables seedbox.sh logo.sh /usr/local/bin
+mv seedbox.sh logo.sh /usr/local/bin
+mv iptables /etc/network/if-pre-up.d/iptables
 cd /usr/local/bin
-chmod +x iptables seedbox.sh logo.sh
+chmod +x seedbox.sh logo.sh
 seedbox.sh
 
 seedbox docker avec traefik, avec un peu de secu
