@@ -19,6 +19,3 @@ possibilité de changer le pass de root dans putty
 plein d'applis
 ```
 
-
-
-Voili voilou chris, amuses toi bien :)
