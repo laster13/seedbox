@@ -1,4 +1,5 @@
 ### Script de @Barberousse de Mondedie
+### https://mondedie.fr/d/10271-chaine-prerouting-iptables-dans-la-table-nat/7
 #!/bin/bash
 IEXT=$(route | grep '^default' | grep -o '[^ ]*$')
 RESEAU_LOCAL="127.0.0.0/24"
