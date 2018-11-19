@@ -265,6 +265,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			export HEIMDALL_FQDN=heimdall.${DOMAIN}
 
 			read -rp "Voulez-vous modifier les variables ci dessus ? (o/n) : " EXCLUDE
+			echo""
 				if [[ "$EXCLUDE" = "o" ]] || [[ "$EXCLUDE" = "O" ]]; then
 
 			echo -e "${CCYAN}-------------------------------------------------------------------------------------------------------------------------${CEND}"
