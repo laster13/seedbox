@@ -1377,8 +1377,10 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo "AllowUsers $NAME" >> /etc/ssh/sshd_config
 				echo ""
 				read -rp "Choisir un port ssh (Entre 22 et 65 536) " PORT
-				sed -i '/Port/d' /etc/ssh/sshd_config
-				echo "Port $PORT" >> /etc/ssh/sshd_config
+				sed -i -e "s/#Port/Port/g" /etc/ssh/sshd_config
+				sed -i -e "s/Port 22/Port '$PORT'/g" /etc/ssh/sshd_config
+				#sed -i '/Port/d' /etc/ssh/sshd_config
+				#echo "Port $PORT" >> /etc/ssh/sshd_config
 				sed -i -e "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 				echo ""
 				progress-bar 20
