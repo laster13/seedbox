@@ -58,7 +58,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			then
 				apt update && apt upgrade -y \
 				apt-get install -y \
-				apache2
 				curl
 				unzip
 				apt install docker.io -y
@@ -69,6 +68,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo -e "${CCYAN}Installation docker & docker compose terminée${CEND}"
 				echo ""
 				read -p "Appuyer sur la touche Entrer pour revenir au menu principal"
+				mkdir -p /etc/apache2
 				touch /etc/apache2/.htpasswd
 				seedbox.sh
 
