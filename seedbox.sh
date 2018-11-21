@@ -1066,7 +1066,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 					docker-compose up -d pyload 2>/dev/null
 					progress-bar 20
 					echo ""
-					-e "${CGREEN}Installation de pyload réussie${CEND}"
+					echo -e "${CGREEN}Installation de pyload réussie${CEND}"
 					echo ""
 					read -p "Appuyer sur la touche Entrer pour continuer"
 					clear
