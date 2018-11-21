@@ -1328,6 +1328,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo "root: $MAIL" >> /etc/aliases
 				newaliases
 				echo "echo 'Acces Shell Root le ' \`date\` \`who\` | mail -s 'Connexion serveur via root' root" >> /root/.bashrc
+				sed -i -e 's/smtp/#smtp/g' /etc/postfix/master.cf
 				service postfix restart
 				apt install -f logwatch
 				sed -i -e 's/Output = stdout/Output = mail/g' /usr/share/logwatch/default.conf/logwatch.conf
@@ -1524,11 +1525,12 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo ""
 
 				# Mise en place iptables
-				sed -i -e 's/22/'$PORT'/g' /etc/network/if-pre-up.d/iptables
+				sed -i -e 's/22/'$PORT'/g' /etc/iptables
 				read -p "Appuyer sur la touche Entrer pour continuer"
-				chmod +x /etc/network/if-pre-up.d/iptables
-				/etc/network/if-pre-up.d/iptables clear
-				/etc/network/if-pre-up.d/iptables start
+				chmod +x /etc/iptables
+				/etc/iptables clear
+				/etc/iptables start
+				apt install iptables-persistent -y
 				progress-bar 20
 				echo ""
 				echo -e "${CCYAN}Iptables a été configuré avec succés${CEND}"
