@@ -71,6 +71,11 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				read -p "Appuyer sur la touche Entrer pour revenir au menu principal"
 				mkdir -p /etc/apache2
 				touch /etc/apache2/.htpasswd
+				clear
+				logo.sh
+				echo -e "${CCYAN}Installation docker & docker compose terminée${CEND}"
+				echo ""
+				read -p "Appuyer sur la touche Entrer pour revenir au menu principal"
 				seedbox.sh
 
 			else
