@@ -819,8 +819,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			      - traefik.protocol=https
 			    environment:
 			      - TZ=Paris/Europe
-			      - PUID=0
-			      - PGID=0
+			      - PUID=1001
+			      - PGID=1001
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/heimdall/config:/config
 			    networks:
