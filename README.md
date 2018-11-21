@@ -7,7 +7,7 @@ cd /tmp
 git clone https://github.com/laster13/seedbox.git
 cd seedbox
 mv seedbox.sh logo.sh /usr/local/bin
-mv iptables /etc/network/if-pre-up.d/iptables
+mv iptables /etc/iptables
 cd /usr/local/bin
 chmod +x seedbox.sh logo.sh
 seedbox.sh
