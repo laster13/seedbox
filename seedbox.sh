@@ -438,7 +438,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 						then
 			 				export HEIMDALL_FQDN=${HEIMDALL_FQDN}.${DOMAIN}
 						else
-			 				HEIMDALL_FQDN=nextcloud.${DOMAIN}
+			 				HEIMDALL_FQDN=heimdall.${DOMAIN}
 			 				export HEIMDALL_FQDN
 						fi
 
