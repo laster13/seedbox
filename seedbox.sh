@@ -130,14 +130,18 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			fi
 
 			echo  ""
-			echo -e "${CCYAN}Nom d'utilisateur ${CEND}"
+			echo -e "${CCYAN}Nom d'utilisateur pour l'authentification WEB ${CEND}"
 			read -rp "USERNAME = " USERNAME
 
 			if [ -n "$USERNAME" ]
 			then
 			 	export USERNAME
+				mkdir -p /etc/apache2
+				VAR=$(htpasswd -c /etc/apache2/.htpasswd $USERNAME 2>/dev/null)
+				VAR=$(sed -e 's/\$/\$$/g' /etc/apache2/.htpasswd 2>/dev/null)
+				export VAR
 			fi
-
+			
 			echo ""
 			echo -e "${CCYAN}Adresse mail ${CEND}"
 			read -rp "MAIL = " MAIL
@@ -442,13 +446,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 						fi
 
 				fi
-
-			## création d'une authentification pour rtorrent
-			echo -e "${CCYAN}Définir un utilisateur Pour l'authentification web${CEND}"
-			mkdir -p /etc/apache2
-			VAR=$(htpasswd -c /etc/apache2/.htpasswd $USERNAME 2>/dev/null)
-			VAR=$(sed -e 's/\$/\$$/g' /etc/apache2/.htpasswd 2>/dev/null)
-			export VAR
 
 			## Création d'un fichier .env
 			docker network create traefik_proxy 2>/dev/null
@@ -1187,7 +1184,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo -e "${CRED}---------------------------------------------------------${CEND}"
 				echo -e "${CGREEN}    	- identifiants (Ce que vous voulez)		 ${CEND}"
 				echo -e "${CGREEN}    	- Utilisateur base de donnée: nextcloud		 ${CEND}"
-				echo -e "${CGREEN}    	- passwd: mot de passe créé précédemment         ${CEND}"
+				echo -e "${CGREEN}    	- passwd: $PASS					 ${CEND}"
 				echo -e "${CGREEN}    	- Nom de la base de donnée: nextcloud		 ${CEND}"
 				echo -e "${CGREEN}    	- hote: mariadb					 ${CEND}"
 				echo -e "${CRED}---------------------------------------------------------${CEND}"
