@@ -231,7 +231,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 
 			while IFS=: read user
 			do
-			mkdir -p ${VOLUMES_ROOT_PATH}/Medias
+			mkdir -p ${VOLUMES_ROOT_PATH}/Medias/$user
 			done < ${VOLUMES_ROOT_PATH}/local.txt
 
 			FILMS=$(grep -E 'films|film|Films|FILMS|MOVIES|Movies|movies|movie|VIDEOS|VIDEO|Video|Videos' ${VOLUMES_ROOT_PATH}/local.txt | cut -d: -f2 | cut -d ' ' -f2)
