@@ -152,7 +152,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			fi
 			
 			echo ""
-			read -rp "Souhaitez vous installer Nextcloud ? (o/n) : " EXCLUDE
+			read -rp "Souhaitez vous utiliser Nextcloud ? (o/n) : " EXCLUDE
 			if [[ "$EXCLUDE" = "o" ]] || [[ "$EXCLUDE" = "O" ]]; then
 	
 				echo -e "${CGREEN}${CEND}"
@@ -161,6 +161,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				if [ -n "$PASS" ]
 				then
 			 		export PASS
+					echo -e "${CGREEN}Vous devrez lancer nextcloud à partir des applications choix 3${CEND}"
 				fi
 			fi
 
