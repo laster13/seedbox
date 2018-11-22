@@ -60,8 +60,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				apt-get install -y \
 				curl
 				unzip
-				apache2-utils
-				apt install docker.io -y
+				apt install docker.io apache2-utils -y
                         	curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
                         	chmod +x /usr/local/bin/docker-compose
 				mkdir -p /etc/apache2
