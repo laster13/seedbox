@@ -1363,9 +1363,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				passwd $NAME
 				chown -R $NAME:$NAME /home/$NAME
 				cat <<- EOF >> /etc/ssh/sshd_config
-				AllowUsers $NAME"
+				AllowUsers $NAME
 				EOF
-				# echo "AllowUsers $NAME" >> /etc/ssh/sshd_config
 				echo ""
 				read -rp "Choisir un port ssh (Entre 22 et 65 536) " PORT
 				sed -i -e "s/#Port/Port/g" /etc/ssh/sshd_config
