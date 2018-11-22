@@ -146,6 +146,18 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			then
 			 	export MAIL
 			fi
+			
+			read -rp "Souhaitez vous installer Nextcloud ? (o/n) : " EXCLUDE
+			if [[ "$EXCLUDE" = "o" ]] || [[ "$EXCLUDE" = "O" ]]; then
+	
+				echo -e "${CGREEN}${CEND}"
+				read -rp "Choisir un mot de passe pour la base de donnée MARIADB = " PASS
+
+				if [ -n "$PASS" ]
+				then
+			 		export PASS
+				fi
+			fi
 
 			clear
 			echo -e "${CCYAN}-------------------------------------------------------------------------------------------------------------------------${CEND}"
@@ -482,6 +494,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			MAIL=$MAIL
 			USERNAME=$USERNAME
 			DOMAIN=$DOMAIN
+			PASS=$PASS
 			PROXY_NETWORK=$PROXY_NETWORK
 			TRAEFIK_DASHBOARD_URL=$TRAEFIK_DASHBOARD_URL
 			PLEX_FQDN=$PLEX_FQDN
@@ -849,9 +862,9 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			    container_name: mariadb
 			    environment:
 			      - MYSQL_USER=nextcloud
-			      - MYSQL_PASSWORD=
+			      - MYSQL_PASSWORD=${PASS}
 			      - MYSQL_DATABASE=nextcloud
-			      - MYSQL_ROOT_PASSWORD=
+			      - MYSQL_RANDOM_ROOT_PASSWORD=yes
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/mariadb:/var/lib/mysql
 			    networks:
