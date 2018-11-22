@@ -147,6 +147,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			 	export MAIL
 			fi
 			
+			echo ""
 			read -rp "Souhaitez vous installer Nextcloud ? (o/n) : " EXCLUDE
 			if [[ "$EXCLUDE" = "o" ]] || [[ "$EXCLUDE" = "O" ]]; then
 	
@@ -255,7 +256,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			echo -e "${CRED}	${CCYAN}PORTAINER_FQDN:${CRED}		portainer.${DOMAIN}							  ${CEND}"
 			echo -e "${CRED}	${CCYAN}TAUTULLI_FQDN:${CRED}		tautulli.${DOMAIN}							  ${CEND}"
 			echo -e "${CRED}	${CCYAN}NEXTCLOUD_FQDN:${CRED}		nextcloud.${DOMAIN}							  ${CEND}"
-			echo -e "${CRED}	${CCYAN}SONEREZH_FQDN:${CRED}		sonerezh.${DOMAIN}							  ${CEND}"
 			echo -e "${CRED}	${CCYAN}HEIMDALL_FQDN:${CRED}		heimdall.${DOMAIN}							  ${CEND}"
 			echo -e "${CRED}-------------------------------------------------------------------------------------------------------------------------${CEND}"
 			echo -e "${CGREEN}				VOUS POUVEZ MODIFIER TOUTES CES VARIABLES A VOTRE CONVENANCE				  ${CEND}"	
@@ -275,7 +275,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			export PORTAINER_FQDN=portainer.${DOMAIN}
 			export TAUTULLI_FQDN=tautulli.${DOMAIN}
 			export NEXTCLOUD_FQDN=nextcloud.${DOMAIN}
-			export SONEREZH_FQDN=sonerezh.${DOMAIN}
 			export HEIMDALL_FQDN=heimdall.${DOMAIN}
 
 			read -rp "Voulez-vous modifier les variables ci dessus ? (o/n) : " EXCLUDE
@@ -417,18 +416,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			 				export TAUTULLI_FQDN
 						fi
 
-					echo -e "${CGREEN}${CEND}"
-					echo -e "${CCYAN}Sous domaine de sonerezh${CEND}"
-					read -rp "SONEREZH_FQDN = " SONEREZH_FQDN
-
-						if [ -n "$SONEREZH_FQDN" ]
-						then
-			 				export SONEREZH_FQDN=${SONEREZH_FQDN}.${DOMAIN}
-						else
-			 				SONEREZH_FQDN=sonerezh.${DOMAIN}
-			 				export SONEREZH_FQDN
-						fi
-
 
 					echo -e "${CGREEN}${CEND}"
 					echo -e "${CCYAN}Sous domaine de nextcloud${CEND}"
@@ -481,7 +468,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			export PORTAINER_FQDN=portainer.${DOMAIN}
 			export TAUTULLI_FQDN=tautulli.${DOMAIN}
 			export NEXTCLOUD_FQDN=nextcloud.${DOMAIN}
-			export SONEREZH_FQDN=sonerezh.${DOMAIN}
 			export HEIMDALL_FQDN=heimdall.${DOMAIN}
 
 			cat <<- EOF > /mnt/.env
@@ -505,7 +491,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			PORTAINER_FQDN=$PORTAINER_FQDN
 			JACKETT_FQDN=$JACKETT_FQDN
 			NEXTCLOUD_FQDN=$NEXTCLOUD_FQDN
-			SONEREZH_FQDN=$SONEREZH_FQDN
 			TAUTULLI_FQDN=$TAUTULLI_FQDN
 			SYNCTHING_FQDN=$SYNCTHING_FQDN
 			PYLOAD_FQDN=$PYLOAD_FQDN
@@ -924,10 +909,9 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			echo -e "${CGREEN}   10) Tautulli ${CEND}"
 			echo -e "${CGREEN}   11) Heimball ${CEND}"
 			echo -e "${CGREEN}   12) Nextcloud ${CEND}"
-			echo -e "${CGREEN}   13) Sonerezh ${CEND}"
-			echo -e "${CGREEN}   14) Retour Menu Principal ${CEND}"
+			echo -e "${CGREEN}   13) Retour Menu Principal ${CEND}"
 			echo ""
-			read -p "Appli choix [1-11]: " -e -i 1 APPLI
+			read -p "Appli choix [1-13]: " -e -i 1 APPLI
 			echo ""			
 			case $APPLI in
 				1)
@@ -1195,35 +1179,30 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 					progress-bar 20
 					echo ""
 					echo -e "${CGREEN}Installation de nextcloud réussie${CEND}"
-					echo ""
-					read -p "Appuyer sur la touche Entrer pour continuer"
-					clear
-					logo.sh
+				
+				echo ""
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo -e "${CCYAN}       Paramètre de connection Nextcloud		 ${CEND}"
+				echo -e "${CCYAN}							 ${CEND}"
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo -e "${CGREEN}    	- identifiants (Ce que vous voulez)		 ${CEND}"
+				echo -e "${CGREEN}    	- Utilisateur base de donnée: nextcloud		 ${CEND}"
+				echo -e "${CGREEN}    	- passwd: mot de passe créé précédemment         ${CEND}"
+				echo -e "${CGREEN}    	- Nom de la base de donnée: nextcloud		 ${CEND}"
+				echo -e "${CGREEN}    	- hote: mariadb					 ${CEND}"
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo -e "${CCYAN}       Welcome$					 ${CEND}"
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo ""
+				read -p "Appuyer sur la touche Entrer pour continuer"
+				clear
+				logo.sh
+				
 				fi
 
 				;;
 
 				13)
-				if docker ps -a | grep -q sonerezh; then
-					echo -e "${CGREEN}Sonerezh est déjà lancé${CEND}"
-					echo ""
-					read -p "Appuyer sur la touche Entrer pour retourner au menu"
-					clear
-					logo.sh
-				else
-					docker-compose up -d sonerezh 2>/dev/null
-					progress-bar 20
-					echo ""
-					echo -e "${CGREEN}Installation de sonerezh réussie${CEND}"
-					echo ""
-					read -p "Appuyer sur la touche Entrer pour continuer"
-					clear
-					logo.sh
-				fi
-
-				;;
-
-				14)
 				sortir=true
 				seedbox.sh
 
