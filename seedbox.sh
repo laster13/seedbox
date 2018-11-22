@@ -1410,7 +1410,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				# Jail ssh
 				cat <<- EOF > /etc/fail2ban/jail.d/custom.conf
 				[DEFAULT]
-				ignoreip = 127.0.0.1 $IP_DOM $IP_SERV
+				ignoreip = 127.0.0.1 $IP_DOM
 				findtime = 3600
 				bantime = 600
 				maxretry = 3
@@ -1426,7 +1426,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				# Jail traefik
 				cat <<- EOF > /etc/fail2ban/jail.d/traefik.conf
 				[DEFAULT]
-				ignoreip = $IP_DOM $IP_SERV 
+				ignoreip = 127.0.0.1 $IP_DOM
 				findtime = 3600
 				bantime = 600
 				maxretry = 3
