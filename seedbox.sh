@@ -1330,7 +1330,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo "root: $MAIL" >> /etc/aliases
 				newaliases
 				echo "echo 'Acces Shell Root le ' \`date\` \`who\` | mail -s 'Connexion serveur via root' root" >> /root/.bashrc
-				sed -i -e 's/smtp/#smtp/g' /etc/postfix/master.cf
 				service postfix restart
 				sed -i -e 's/Output = stdout/Output = mail/g' /usr/share/logwatch/default.conf/logwatch.conf
 				cat <<- EOF > /usr/share/logwatch/default.conf/logfiles/traefik.conf
