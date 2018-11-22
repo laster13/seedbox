@@ -1485,9 +1485,9 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
  
 				actionstart = iptables -N f2b-traefik-auth
               				iptables -A f2b-traefik-auth -j RETURN
-              				iptables -I FORWARD -p tcp -m multiport --dports 80 -j f2b-traefik-auth
+              				iptables -I FORWARD -p tcp -m multiport --dports 443 -j f2b-traefik-auth
  
-				actionstop = iptables -D FORWARD -p tcp -m multiport --dports 80 -j f2b-traefik-auth
+				actionstop = iptables -D FORWARD -p tcp -m multiport --dports 443 -j f2b-traefik-auth
              				iptables -F f2b-traefik-auth
              				iptables -X f2b-traefik-auth
  
