@@ -826,24 +826,18 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			    networks:
 			      - proxy
 
-			  sonerezh:
-			    container_name: sonerezh
-			    image: gilou/sonerezh:1.2.4-7
+			  nextcloud:
+			    container_name: nextcloud
+			    image: nextcloud
 			    volumes:
-			      - ${VOLUMES_ROOT_PATH}/Medias/Musics:/music
-			      - ${VOLUMES_ROOT_PATH}/sonerezh/thumbnails:/thumbnails
+			      - ${VOLUMES_ROOT_PATH}/nextcloud:/var/www/html
 			    labels:
-			      - traefik.backend=sonerezh
+			      - traefik.backend=nextcloud
 			      - traefik.port=80
-			      - traefik.frontend.rule=Host:${SONEREZH_FQDN}
+			      - traefik.frontend.rule=Host:${NEXTCLOUD_FQDN}
 			      - traefik.enable=true
 			      - traefik.docker.network=traefik_proxy
 			      - traefik.frontend.auth.basic=${VAR}
-			    environment:
-			      - SONEREZH_DB_PORT_3306_TCP_ADDR=mariadb
-			      - SONEREZH_DB_ENV_MYSQL_DATABASE=sonerezh
-			      - SONEREZH_DB_ENV_MYSQL_USER=admin
-			      - SONEREZH_DB_ENV_MYSQL_PASSWORD=admin
 			    depends_on:
 			      - mariadb
 			    networks:
@@ -852,11 +846,12 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 
 			  mariadb:
 			    image: mariadb
+			    container_name: mariadb
 			    environment:
-			      - MYSQL_USER=sonerezh
-			      - MYSQL_PASSWORD=christophe
-			      - MYSQL_DATABASE=sonerezh
-			      - MYSQL_ROOT_PASSWORD=christophe
+			      - MYSQL_USER=nextcloud
+			      - MYSQL_PASSWORD=
+			      - MYSQL_DATABASE=nextcloud
+			      - MYSQL_ROOT_PASSWORD=
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/mariadb:/var/lib/mysql
 			    networks:
