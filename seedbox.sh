@@ -1424,12 +1424,12 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				findtime = 3600
 				bantime = 600
 				maxretry = 3
-				banaction = docker-action
 
 				[traefik-auth]
 				enabled = true
 				logpath = /var/log/traefik/access.log
 				port = http,https
+				banaction = docker-action
 				maxretry = 2
 
 				[traefik-botsearch]
@@ -1437,6 +1437,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				logpath = /var/log/traefik/access.log
 				maxretry = 1
 				port = http,https
+				banaction = iptables-multiport
 
 				[traefik-badbots]
 				enabled = true
@@ -1444,6 +1445,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				logpath = /var/log/traefik/access.log
 				maxretry = 1
 				port = http,https
+				banaction = iptables-multiport
 				EOF
 
 				# Regex traefik
