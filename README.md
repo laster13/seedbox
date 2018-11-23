@@ -1,7 +1,7 @@
 # seedbox
 ```
 ## installation
-apt update && apt install
+apt update && apt upgrade
 apt install git
 cd /tmp
 git clone https://github.com/laster13/seedbox.git
