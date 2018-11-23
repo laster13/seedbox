@@ -56,11 +56,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			OS=$(cat /etc/*release | grep ^NAME | tr -d 'NAME="')
 			if [ "$OS" = "Ubuntu" ]
 			then
-				apt update && apt upgrade -y \
-				apt-get install -y \
-				curl
-				unzip
-				apt install docker.io apache2-utils -y
+				apt update && apt upgrade -y
+				apt install docker.io apache2-utils curl unzip -y
 				curl https://raw.githubusercontent.com/scopatz/nanorc/master/install.sh | sh
                         	curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
                         	chmod +x /usr/local/bin/docker-compose
