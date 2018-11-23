@@ -770,7 +770,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			      - traefik.frontend.rule=Host:${PORTAINER_FQDN}
 			      - traefik.port=9000
 			      - traefik.docker.network=${PROXY_NETWORK}
-			      - traefik.frontend.auth.basic=${VAR}
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/portainer/data:/data
 			      - /var/run/docker.sock:/var/run/docker.sock
