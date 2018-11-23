@@ -1349,6 +1349,10 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo ""
 
 				## configuration ssh
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo -e "${CCYAN}         Changement des paramètres de connexion SSH	 ${CEND}"
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo ""
 				read -rp "Choisir un nom d'utilisateur " NAME
 				mkdir /home/$NAME
 				useradd -s /bin/bash $NAME
@@ -1363,8 +1367,6 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				read -rp "Choisir un port ssh (Entre 22 et 65 536) " PORT
 				sed -i -e "s/#Port/Port/g" /etc/ssh/sshd_config
 				sed -i -e "s/Port 22/Port $PORT/g" /etc/ssh/sshd_config
-				#sed -i '/Port/d' /etc/ssh/sshd_config
-				#echo "Port $PORT" >> /etc/ssh/sshd_config
 				sed -i -e "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 				echo ""
 				progress-bar 20
@@ -1377,9 +1379,9 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo -e "${CCYAN}    La connection root est maintenant désactivée        ${CEND}"
 				echo -e "${CCYAN}    Nouveaux paramètres de connection:		         ${CEND}"
 				echo -e "${CRED}---------------------------------------------------------${CEND}"
-				echo -e "${CGREEN}    	- port: $PORT				         ${CEND}"
-				echo -e "${CGREEN}    	- username: $NAME			         ${CEND}"
-				echo -e "${CGREEN}    	- passwd: mot de passe créé précédemment         ${CEND}"
+				echo -e "${CGREEN}    	- Port: $PORT				         ${CEND}"
+				echo -e "${CGREEN}    	- Username: $NAME			         ${CEND}"
+				echo -e "${CGREEN}    	- Passwd: mot de passe créé précédemment         ${CEND}"
 				echo -e "${CRED}---------------------------------------------------------${CEND}"
 				echo -e "${CCYAN}    Pour passer en root, taper su + mot de passe root	 ${CEND}"
 				echo -e "${CRED}---------------------------------------------------------${CEND}"
@@ -1391,6 +1393,10 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				;;
 
 				4) # Installation Fail2ban et portsentry
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				echo -e "${CCYAN}    Installation Fail2ban, Portsentry, Iptables	 ${CEND}"
+				echo -e "${CRED}---------------------------------------------------------${CEND}"
+				read -p "Appuyer sur la touche Entrer pour continuer"
 				export $(xargs </mnt/.env)
 				apt install fail2ban portsentry -y
 				echo ""
