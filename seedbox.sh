@@ -972,7 +972,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 					docker exec -t torrent sed -i -e "s/Music/${MUSIC}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/Animes/${ANIMES}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i '/*)/,/;;/d' /usr/local/bin/postdl
-					docker exec -t torrent chown -R 1001:1001 /mnt
+					docker exec -t torrent chown -R 1001:1001 /data/Media
 					read -p "Appuyer sur la touche Entrer pour continuer"
 					clear
 					logo.sh
