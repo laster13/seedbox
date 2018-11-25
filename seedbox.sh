@@ -963,16 +963,16 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 					# Configuration pour le téléchargement en manuel avec filebot
 					docker exec -t torrent rm -rf /data/Media/*
 					rm -rf $VOLUMES_ROOT_PATH/Medias/*
-					docker exec -t torrent mkdir -p /data/Media/${FILMS}
-					docker exec -t torrent mkdir -p /data/Media/${SERIES}
-					docker exec -t torrent mkdir -p /data/Media/${MUSIC}
-					docker exec -t torrent mkdir -p /data/Media/${ANIMES}
+					mkdir -p $VOLUMES_ROOT_PATH/Medias/${FILMS}
+					mkdir -p $VOLUMES_ROOT_PATH/Medias/${SERIES}
+					mkdir -p $VOLUMES_ROOT_PATH/Medias/${MUSIC}
+					mkdir -p $VOLUMES_ROOT_PATH/Medias/${ANIMES}
+					chown -R 1001:1001 $VOLUMES_ROOT_PATH/Medias
 					docker exec -t torrent sed -i -e "s/Movies/${FILMS}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/TV/${SERIES}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/Music/${MUSIC}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/Animes/${ANIMES}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i '/*)/,/;;/d' /usr/local/bin/postdl
-					docker exec -t torrent chown -R 1001:1001 /data/Media
 					read -p "Appuyer sur la touche Entrer pour continuer"
 					clear
 					logo.sh
@@ -1271,16 +1271,16 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				# Configuration pour le téléchargement en manuel avec filebot
 				docker exec -t torrent rm -rf /data/Media/*
 				rm -rf $VOLUMES_ROOT_PATH/Medias/*
-				docker exec -t torrent mkdir -p /data/Media/${FILMS}
-				docker exec -t torrent mkdir -p /data/Media/${SERIES}
-				docker exec -t torrent mkdir -p /data/Media/${MUSIC}
-				docker exec -t torrent mkdir -p /data/Media/${ANIMES}
+				mkdir -p $VOLUMES_ROOT_PATH/Medias/${FILMS}
+				mkdir -p $VOLUMES_ROOT_PATH/Medias/${SERIES}
+				mkdir -p $VOLUMES_ROOT_PATH/Medias/${MUSIC}
+				mkdir -p $VOLUMES_ROOT_PATH/Medias/${ANIMES}
+				chown -R 1001:1001 $VOLUMES_ROOT_PATH/Medias
 				docker exec -t torrent sed -i -e "s/Movies/${FILMS}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/TV/${SERIES}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/Music/${MUSIC}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/Animes/${ANIMES}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i '/*)/,/;;/d' /usr/local/bin/postdl
-				docker exec -t torrent chown -R 1001:1001 /mnt
 				read -p "Appuyer sur la touche Entrer pour continuer"
 				clear
 				logo.sh
