@@ -610,7 +610,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/Medias/${MUSIC}:/music:rw
 			      - ${VOLUMES_ROOT_PATH}/lidarr/config:/config
-			      - ${VOLUMES_ROOT_PATH}/rutorrent/downloads:/downloads
+			      - ${VOLUMES_ROOT_PATH}/rutorrent/data/torrents:/downloads
 			    environment:
 			      - /etc/localtime:/etc/localtime:ro
 			      - TZ=Paris/Europe
@@ -659,7 +659,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			      - PGID=0
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/radarr/config:/config
-			      - ${VOLUMES_ROOT_PATH}/rutorrent/downloads:/downloads
+			      - ${VOLUMES_ROOT_PATH}/rutorrent/data/torrents:/downloads
 			      - ${VOLUMES_ROOT_PATH}/Medias/${FILMS}:/movies
 			    networks:
 			      - proxy
@@ -703,7 +703,7 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			      - traefik.frontend.auth.basic=${VAR}
 			    volumes:
 			      - ${VOLUMES_ROOT_PATH}/Medias/${SERIES}:/tv
-			      - ${VOLUMES_ROOT_PATH}/rutorrent/downloads:/downloads
+			      - ${VOLUMES_ROOT_PATH}/rutorrent/data/torrents:/downloads
 			      - ${VOLUMES_ROOT_PATH}/medusa/config:/config
 			    environment:
 			      - /etc/localtime:/etc/localtime:ro
@@ -733,8 +733,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 			      - DHT_RTORRENT=on
 			      - PORT_RTORRENT=6881
 			    volumes:
-			      - ${VOLUMES_ROOT_PATH}/rutorrent/downloads:/data/torrents
-			      - ${VOLUMES_ROOT_PATH}/Medias:/data/Media
+			      - ${VOLUMES_ROOT_PATH}/rutorrent/data/torrents:/data/torrents
+			      - ${VOLUMES_ROOT_PATH}/Medias:/mnt/Media
 			      - ${VOLUMES_ROOT_PATH}/rutorrent/data:/data
 			      - ${VOLUMES_ROOT_PATH}/rutorrent/config:/config
 			    networks:
@@ -961,13 +961,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 					echo ""
 
 					# Configuration pour le téléchargement en manuel avec filebot
-					docker exec -t torrent rm -rf /data/Media/*
-					rm -rf $VOLUMES_ROOT_PATH/Medias/*
-					mkdir -p $VOLUMES_ROOT_PATH/Medias/${FILMS}
-					mkdir -p $VOLUMES_ROOT_PATH/Medias/${SERIES}
-					mkdir -p $VOLUMES_ROOT_PATH/Medias/${MUSIC}
-					mkdir -p $VOLUMES_ROOT_PATH/Medias/${ANIMES}
-					chown -R 1001:1001 $VOLUMES_ROOT_PATH/Medias
+					docker exec -t torrent chown -R 1001:1001 /mnt
+					docker exec -t torrent sed -i -e "s/data/mnt/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/Movies/${FILMS}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/TV/${SERIES}/g" /usr/local/bin/postdl
 					docker exec -t torrent sed -i -e "s/Music/${MUSIC}/g" /usr/local/bin/postdl
@@ -1269,13 +1264,8 @@ echo -e "${CCYAN}INSTALLATION${CEND}"
 				echo ""
 
 				# Configuration pour le téléchargement en manuel avec filebot
-				docker exec -t torrent rm -rf /data/Media/*
-				rm -rf $VOLUMES_ROOT_PATH/Medias/*
-				mkdir -p $VOLUMES_ROOT_PATH/Medias/${FILMS}
-				mkdir -p $VOLUMES_ROOT_PATH/Medias/${SERIES}
-				mkdir -p $VOLUMES_ROOT_PATH/Medias/${MUSIC}
-				mkdir -p $VOLUMES_ROOT_PATH/Medias/${ANIMES}
-				chown -R 1001:1001 $VOLUMES_ROOT_PATH/Medias
+				docker exec -t torrent chown -R 1001:1001 /mnt
+				docker exec -t torrent sed -i -e "s/data/mnt/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/Movies/${FILMS}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/TV/${SERIES}/g" /usr/local/bin/postdl
 				docker exec -t torrent sed -i -e "s/Music/${MUSIC}/g" /usr/local/bin/postdl
