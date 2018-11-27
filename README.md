@@ -12,7 +12,7 @@ cd /usr/local/bin
 chmod +x seedbox.sh logo.sh
 seedbox.sh
 
-seedbox docker sécurisée avec traefik(iptables, fail2ban, logwatch, portsentry)
+seedbox docker sécurisée avec traefik (iptables, fail2ban, logwatch, portsentry)
 integration du tuto
 https://mondedie.fr/d/5318-Tuto-Securisation-Logs-V-3-nginx
 possibilité de changer le .htpasswd pour l'identification des applis
